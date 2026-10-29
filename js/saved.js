@@ -1,0 +1,5 @@
+(() => {
+ const {db,getFavorites,card,toggleFavorite}=window.ProverbApp;const grid=document.querySelector('#saved-grid'),empty=document.querySelector('#saved-empty'),count=document.querySelector('#saved-count'),status=document.querySelector('#saved-status');
+ function render(){const ids=getFavorites(),items=ids.map(id=>db.find(x=>x.id===id)).filter(Boolean);count.textContent=items.length;status.textContent=items.length?`Показано ${items.length} сохранённых карточек`:'Твоя подборка';grid.innerHTML=items.map(card).join('');grid.hidden=!items.length;empty.hidden=items.length>0}
+ grid.addEventListener('click',event=>{const article=event.target.closest('.catalog-card');if(!article)return;const item=db.find(x=>x.id===article.dataset.id);if(event.target.closest('.card-save')){toggleFavorite(item.id);render()}else if(event.target.closest('.catalog-train')){window.ProverbApp.selectProverb(item.id);location.href='practice.html'}else if(event.target.closest('.catalog-ask')){window.ProverbApp.selectProverb(item.id);location.href='ai.html'}});document.addEventListener('pvi:favorites',render);render();
+})();
